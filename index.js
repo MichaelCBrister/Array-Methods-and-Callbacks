@@ -38,7 +38,7 @@ function getYears(callback) {
     const years = callback.map(function (item) {
       return {year: item.Year};
     });
-    return years
+    return years;
   }
   console.log(getYears(getFinals(fifaData)));
 
@@ -48,14 +48,14 @@ function getWinners(callback) {
     const homeWinners = callback.filter(function (item) {
         return item["Home Team Goals"] >= item["Away Team Goals"];
     }).map(function (item) {
-        return {"Home Team Name": item["Home Team Name"]};
+        return {"Winning Team Name": item["Home Team Name"]};
     });
     const awayWinners = callback.filter(function (item) {
         return item["Home Team Goals"] < item["Away Team Goals"];
     }).map(function (item) {
-        return {"Away Team Name": item["Away Team Name"]};
+        return {"Winning Team Name": item["Away Team Name"]};
     });
-    const winners =(homeWinners.concat(awayWinners));
+    const winners = homeWinners.concat(awayWinners);
     return winners;
 }
 
@@ -68,12 +68,26 @@ Parameters:
  * callback function getYears
  */
 
-// function getWinnersByYear(callback1, callback2) {
-//    for (let i = 0; i < callback1.length; i++) {
-//     return `In ${callback2["Year"]}, ${callback1["Home Team Name"]} won the World Cup!`;
-//   }
+// function getWinnersByYear(cbYear, cbWinner) {
+//     const newArr = cbYear.map(function(item) {
+//         return {year: item.year}
+//     });
+//     const newArr2 = (cbWinner.map(function(item) {
+//         return {newArr.push("Winning Team Name": item["Winning Team Name"])}
+//     }));
+//     console.log(newArr)
+//     console.log(`In ${newArr.year}, ${newArr["Winning Team Name"]} won the World Cup!`);
 // }
-// console.log(getWinnersByYear(getWinners(fifaData)), getYears(getFinals(fifaData)));
+
+function getWinnersByYear(cbYear, cbWinner) {
+    let newArr = cbYear.map((item, i) => 
+        Object.assign({}, item, cbWinner[i]));
+    for (let i = 0; i < newArr.length; i++) {
+    console.log(`In ${newArr[i].year}, ${newArr[i]["Winning Team Name"]} won the World Cup!`);
+    }
+}
+  
+getWinnersByYear(getYears(getFinals(fifaData)),getWinners(getFinals(fifaData)));
 
 /* Task 6: Write a function called `getAverageGoals` that accepts a parameter `data` and returns the the average number of home team goals and away team goals scored per match (Hint: use .reduce and do this in 2 steps) */
 
